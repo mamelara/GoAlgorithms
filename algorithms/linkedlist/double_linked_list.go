@@ -1,6 +1,7 @@
 package linkedlist
 
 import (
+	"errors"
 	"strconv"
 	"strings"
 )
@@ -21,7 +22,8 @@ type listMethods interface {
 	InsertFront()
 	Append()
 	String()
-	Search()
+	Search() (int, bool)
+	Delete()
 }
 
 func insertFirstNode(prevNode, newNode *Node) {
@@ -97,6 +99,26 @@ func (list *LinkedList) Search(item int) (int, bool) {
 	}
 
 	return elemt, found
+}
+
+func (list *LinkedList) Delete(item int) error {
+	if _, found := list.Search(item); !found {
+		return errors.New("Element cannot be found")
+	}
+
+	var predecessor *Node
+	var deletedNode *Node
+
+	for node := list.sentinel.next; node != list.sentinel; node = node.next {
+		if node.next.value == item {
+			predecessor = node
+			deletedNode = node.next
+		}
+	}
+
+	predecessor.next = deletedNode.next
+	deletedNode.next.prev = predecessor.next
+	return nil
 }
 
 func SentinelSetup() *Node {
