@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
 
 type Node struct {
 	value int
@@ -17,7 +21,7 @@ type listMethods interface {
 	Size() int
 	InsertFront()
 	Append()
-	ToString()
+	String()
 	Search()
 }
 
@@ -68,22 +72,18 @@ func (list *LinkedList) Append(item int) {
 	list.insertBack(list.sentinel, item)
 }
 
-func (list *LinkedList) ToString() []byte {
+func (list *LinkedList) String() string {
+	elements := make([]string, list.Size()+2)
 
-	addSizeOfBrackets := 2
-	listContents := make([]byte, list.Size()+addSizeOfBrackets)
-	node := list.sentinel.next
-	listContents[0] = byte("[")
+	elements = append(elements, "[")
 
-	i := 1
-	for ; node != list.sentinel; node = node.next {
-		listContents[i] = byte(node.value)
-		i++
+	for node := list.sentinel.next; node != list.sentinel; node = node.next {
+		elements = append(elements, strconv.Itoa(node.value))
 	}
 
-	listContents[(list.Size()+addSizeBrackets)-1] = byte("]")
+	elements = append(elements, "]")
 
-	return listContents
+	return strings.Join(elements, " ")
 }
 
 func SentinelSetup() *Node {
@@ -108,5 +108,8 @@ func main() {
 	list.Append(2)
 	fmt.Println(prompt, list.Size())
 
-	fmt.Println(list.ToString())
+	list.InsertFront(3)
+	fmt.Println(prompt, list.Size())
+
+	fmt.Println(list.String())
 }
