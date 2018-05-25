@@ -1,3 +1,5 @@
+/* This is by no means a good implementation nor has it been thoroughly tested */
+
 package linkedlist
 
 import (
