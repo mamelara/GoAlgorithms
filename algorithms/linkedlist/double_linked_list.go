@@ -1,7 +1,6 @@
-package main
+package linkedlist
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 )
@@ -86,30 +85,23 @@ func (list *LinkedList) String() string {
 	return strings.Join(elements, " ")
 }
 
+func (list *LinkedList) Search(item int) (int, bool) {
+	var elemt int
+	found := false
+
+	for node := list.sentinel.next; node != list.sentinel; node = node.next {
+		if node.value == item {
+			elemt = node.value
+			found = true
+		}
+	}
+
+	return elemt, found
+}
+
 func SentinelSetup() *Node {
 	sentinel := &Node{value: -1}
 	sentinel.next = sentinel
 	sentinel.prev = sentinel
 	return sentinel
-}
-
-func main() {
-
-	var prompt string = "current size of list"
-
-	sentinel := SentinelSetup()
-
-	list := LinkedList{sentinel: sentinel}
-	fmt.Println(prompt, list.Size())
-
-	list.InsertFront(1)
-	fmt.Println(prompt, list.Size())
-
-	list.Append(2)
-	fmt.Println(prompt, list.Size())
-
-	list.InsertFront(3)
-	fmt.Println(prompt, list.Size())
-
-	fmt.Println(list.String())
 }
